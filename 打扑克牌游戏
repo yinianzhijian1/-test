@@ -1,0 +1,84 @@
+package demo02;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeSet;
+
+public class Test {
+	
+public static void main(String[] args) {
+	
+	  //需要定义一个map集合
+	Map<Integer, String>  map   = new HashMap<Integer, String>();
+	//存索引的集合
+	ArrayList<Integer>  list   = new ArrayList<Integer>();
+	
+	 String[]hua  = {"♦","♣","♥","♠"};
+	 String [] nums = {"3","4","5","6","7","8","9","10","J","Q","K","A","2"};
+	 //定义一个索引的变量
+	  int index =0;
+	 for(String s :nums) {
+		 for(String str:hua) {
+			 String strHua = str+s;
+			 map.put(index, strHua);
+			 list.add(index);
+			 index++;
+		 }
+	 }
+	  //增加小王
+	   map.put(index, "小王");
+	   list.add(index);
+	   index++;
+	   list.add(index);
+	   map.put(index, "大王");
+//	   System.out.println(index);
+//	   System.out.println(list.size());
+	   
+	   
+	   //洗牌
+	   Collections.shuffle(list);
+	   
+	   
+	   //发牌 四个人  底牌  小承 小熊 小磊  用什么装索引值  TreeSet  自然排序从小到到大进行
+	   TreeSet<Integer>  dipai  = new TreeSet<Integer>();
+	   TreeSet<Integer> cheng  = new TreeSet<Integer>();
+	   TreeSet<Integer> xiong  = new TreeSet<Integer>();
+	   TreeSet<Integer> lei =  new TreeSet<Integer>();
+	   
+	   for(int i =0;i<list.size();i++) {
+		   if(i>=list.size()-3) {
+			   dipai.add(list.get(i));
+		   }else if(i % 3  ==0) {
+			   cheng.add(list.get(i));
+		   }else if(i % 3 ==1) {
+			   xiong.add(list.get(i));
+		   }else if( i % 3  ==2) {
+			   lei.add(list.get(i));
+		   }
+	   }
+	   
+	   
+	  //开牌  写一个方法看牌  名字    TreeSet   map 值
+	    show("小承", cheng, map);
+	    show("小熊", xiong, map);
+	    show("小磊", lei, map);
+	    show("底牌", dipai, map);
+	    
+	   
+	
+}
+
+  public  static   void   show(String name,TreeSet<Integer> treeSet, Map<Integer,String> map) {
+	  String str ="";
+	     for(Integer  in : treeSet) {
+	    	  str+=map.get(in);
+	    	// System.out.print( name +"\t"+map.get(in));
+	     }
+	     System.out.print(name+"\t"+ str);
+	     //str="";
+	     System.out.println("");
+  }
+
+}
