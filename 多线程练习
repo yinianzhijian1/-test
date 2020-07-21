@@ -1,0 +1,343 @@
+2.使用第三种方式做一个多线程操作
+
+3. 使用线程池做一个1到100的偶数之和
+
+4.写一遍生产者与消费者模式
+
+5 写一个字符串的单例设置模式（未完成）
+
+6. 写一个简单工厂着模式
+
+```java
+//2.使用第三种方式做一个多线程操作
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+public class MyCall implements Callable{
+
+	@Override
+	public Object call() throws Exception {
+		System.out.println(Thread.currentThread().getName());
+		 int  sum=0;
+		  for(int i=0;i<=100;i++) {
+			   sum+=i;
+		  }
+		return sum;
+	}
+
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		MyCall myCall = new MyCall();
+		
+		FutureTask<Integer>  ft  = new FutureTask<Integer>(myCall);
+		Thread sb = new  Thread(ft,"第三个线程实现");
+		sb.start();
+		Integer  num  = ft.get();
+		System.out.println(num);
+		
+	}
+}
+
+//3. 使用线程池做一个1到100的偶数之和
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+public class MyCallAble implements Callable<Integer>{
+
+	public Integer call() throws Exception {
+		int sum=0;
+		for(int i=0;i<=100;i+=2) {
+			sum=sum+i;
+		}
+			
+		return sum;
+
+	}
+
+public static void main(String[] args) throws InterruptedException, ExecutionException {
+	ExecutorService eService  = 	Executors.newFixedThreadPool(2);
+	
+	Future<Integer>  f =	  eService.submit(new MyCallAble());
+	System.out.println(f.get());
+}
+}
+
+//4.写一遍生产者与消费者模式
+package eatapple;
+
+public class apple {
+
+	public String pi;
+
+	public String xian;
+
+	// 设置一个标记 true 表示存在苹果 false 表示没有苹果
+	boolean flag = false;
+
+}
+-----
+package eatapple;
+
+public class me extends Thread{
+//消费者
+	 private apple a;
+	 
+	public me(apple a) {
+		this.a = a;
+	}
+
+	@Override
+	public void run() {
+		  while(true) {
+			  
+			  synchronized (a) {
+					 
+					 //没有苹果  只能等待苹果
+					  if(!a.flag) {
+						   try {
+							a.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						   
+						  
+					  }
+					  
+					  
+					  //有苹果 直接吃苹果
+					  System.out.println("***********************");
+					  
+					  System.out.println("我正在吃"+a.pi+a.xian+"苹果");
+					  
+					  //需要要当前苹果的状态 修改为 false
+					   a.flag = false;
+					   //通知去削苹果
+					   a.notify();
+					  
+					
+				}
+		  }
+		  
+	}
+
+}
+----
+
+package eatapple;
+
+public class you extends Thread{
+//生产者
+	 private apple a;
+	 
+	public you(apple a) {
+		this.a = a;
+	}
+
+	@Override
+	public void run() {
+		  while(true) {
+			  
+			  synchronized (a) {
+					 
+					 //还有苹果  只能等待
+					  if(a.flag) {
+						   try {
+							a.wait();
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					  }
+					  //没苹果 削苹果
+					  System.out.println("=============");
+						//没有苹果 就可以开始削苹果
+						a.pi="红皮";
+						a.xian="空心";
+					  System.out.println("我正在削"+a.pi+a.xian+"包子");
+					  
+					  //需要要当前苹果的状态 修改为 false
+					   a.flag = true;
+					   //通知去削苹果
+					   a.notify();
+					  
+					
+				}
+		  }
+		  
+	}
+
+}
+----
+
+package eatapple;
+
+public class test {
+	public static void main(String[] args) {
+		apple baoZi  = new apple();
+		//生产者
+		new  you(baoZi).start();
+		//消费者
+		new me(baoZi).start();
+	}
+
+}
+
+
+
+//5 写一个字符串的单例设置模式（未完成）
+
+//6. 写一个简单工厂着模式
+package demo18;
+
+public class Dog extends Pet {
+
+	private String kind;
+//这是？
+	public Dog() {
+//狗的种类  -继承了动物- 的 名字 年龄
+	}
+
+//有参构造 get set
+//这是？
+	public Dog(String name, int age, String kind) {
+		super(name, age);
+		this.kind = kind;
+	}
+//return就是get
+	public String getKind() {
+		return kind;
+	}
+//this就是set
+	public void setKind(String kind) {
+		this.kind = kind;
+	}
+//吃
+	@Override
+	public void eat() {
+		System.out.println("和我一起玩");
+	};
+	
+	
+
+}
+----
+
+package demo18;
+
+public class Penguin extends  Pet{
+	private  String sex;
+
+//企鹅的性别 -继承了动物- 的 名称 年龄
+//实现同狗
+	public Penguin() {
+		
+	}
+
+	public Penguin(String name, int age, String sex) {
+		super(name, age);
+		this.sex = sex;
+	}
+
+
+	public String getSex() {
+		return sex;
+	}
+	
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	@Override
+	public void eat() {
+		System.out.println("吃鱼");
+	}
+
+}
+----
+
+package demo18;
+
+public class Mater {
+	
+	 public  static Pet getPet(String type) {
+		 Pet pet =null;
+//		 是狗
+		  if("dog".equals(type)) {
+			   pet = new Dog();
+//			    是企鹅
+		  }else if("penguin".equals(type)) {
+			  pet = new Penguin();
+		  }
+		  return pet;
+		 
+	 }
+
+}
+----
+
+package demo18;
+
+import java.io.Serializable;
+
+public abstract class Pet implements Serializable{
+//动物实现了啥--有名字和年龄
+//无参构造 set get toString
+	 private  String name;
+	 
+	 private  int age;
+
+	public Pet(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+
+	public Pet() {
+		super();
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return "Pet [name=" + name + ", age=" + age + "]";
+	}
+	
+//有一个吃的方法
+	public  abstract   void  eat();
+	 
+}
+----
+
+package demo18;
+
+public class Test {
+	public static void main(String[] args) {
+		 //Mater mater  = new Mater()
+	  Pet  pet = 	Mater.getPet("dog");
+	   pet.eat();
+				 
+	}
+
+}
+```
