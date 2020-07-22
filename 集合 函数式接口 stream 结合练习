@@ -1,0 +1,77 @@
+```java
+
+/*有两个Arraylist集合，存储队伍中的多个成员姓名，使用Stream方式，对以下步骤进行操作
+1、第一个队伍只要名字为3个字的成员姓名
+2、第一个队伍只要筛选之后的前三个人
+3、第二个队伍只要姓张的
+4、第二个队伍筛选之后不要前两个人
+5、将两个队伍合并成一个队伍
+6、合并之后的队伍中的所有人的Person（自定义类型）对象，存储到一个ArrayList集合中
+队伍1：宫本武藏、宋公明、苏有朋、石头人、时传祥、李耳、庄子、洪七公
+队伍2：帕瓦罗蒂、张三疯、赵薇薇、张自忠、孛儿只斤铁木真、张天爱、张翠花*/
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Stream;
+
+public class tes4 {
+	public static void main(String[] args) {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("宫本武藏");
+		list1.add("宋公明");
+		list1.add("苏有朋");
+		list1.add("石头人");
+		list1.add("李耳");
+		list1.add("庄子");
+		list1.add("洪七公");
+		List<String> list2 = new ArrayList<String>();
+		list2.add("帕瓦罗蒂");
+		list2.add("张三丰");
+		list2.add("赵薇薇");
+		list2.add("张自忠");
+		list2.add("织金铁木真");
+		list2.add("张天爱");
+		list2.add("张翠花");
+		
+		Stream<String> sb1 =list1.stream().filter((String n)->{
+			return n.length()==3;	
+//		}).filter((String w)->{
+//			return w.limit(3);
+			
+		}).limit(3);
+//第二个
+		Stream<String> sb2 =list2.stream().filter((String m)->{
+			return m.startsWith("张");
+		}).limit(2);
+//创建集合
+		List<Person> sb3 = new ArrayList<Person>();
+//合并
+		Stream<String> sb4 = Stream.concat(sb1, sb2);
+//加入对象
+		sb4.map((String str)->{
+			return new Person(str);
+//加入集合
+		}).forEach((Person p)->{
+			sb3.add(p);
+			System.out.println(p);
+		});
+	};
+}
+----
+
+public class Person {
+	private String name;
+
+	@Override
+	public String toString() {
+		return "Person [name=" + name + "]";
+	}
+
+	public Person(String name) {
+		super();
+		this.name = name;
+	}
+	
+}
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200722184550366-1553193661.png)
