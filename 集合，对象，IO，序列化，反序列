@@ -1,0 +1,114 @@
+```java
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+//1将文件中的所有信息，通过合适的IO流读取出来，封装成Person对象，使用集合进行存储
+//2将集合对象序列化到另外一个文件persons.txt中
+//3从persons.txt反序列化其中的集合，并遍历集合内容
+
+public class hw4 {
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = null;		 		//否则try catch访问不到
+		ObjectOutputStream os = null;
+		ObjectInputStream is = null;
+		List<Person> list = new ArrayList<>();
+		try {
+			String len = "";
+			int x = 0;
+			int y = 0;
+			br = new BufferedReader(new InputStreamReader(new FileInputStream("4a.txt")));
+			
+			while ((len = br.readLine()) != null) {
+				String[] strings = len.split(",");		//按 ， 分割 会有前后两个字符串
+				for (int i = 0; i < strings.length; i++) {		//strings的长度为2，前面是age，后面是name
+					x = strings[i].indexOf("=");			// indexOf("="):得到"="位置的索引值
+					len = strings[i].substring(x + 1);			// substring(x+1)把"="和其之前的age或name去掉
+					if (i == 0) {		 		//这一步已经获取了数据，但传进Person，还需要规范数据类型
+						y = Integer.parseInt(len);		// Integer.parseInt()是把()里的内容转换成整数（strings[0]现在是String[]类型）
+					}
+				}
+				Person p = new Person(y, len);		//由于age被name覆盖，所以要用y代替age
+				list.add(p);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				br.close();
+			}
+		}
+		
+		try {
+			os = new ObjectOutputStream(new FileOutputStream("Person.txt"));		// 将集合对象序列化到另外一个文件persons.txt中
+			os.writeObject(list);			// 将List集合中的对象写入Person.txt文件中
+			is = new ObjectInputStream(new FileInputStream("Person.txt"));			// 从persons.txt反序列化其中的集合，并遍历集合内容
+			List<Person> list1 = (List<Person>) is.readObject();			// 读取Person.txt中的内容
+			for (Person p : list1) {
+				System.out.println(p);
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			if (os != null) {
+				try {
+					os.close();
+				} catch (Exception e2) {
+					// TODO: handle exception
+					e2.printStackTrace();
+				} finally {
+					if (is != null) {
+					}
+					try {
+						is.close();
+					} catch (Exception e3) {
+						// TODO: handle exception
+						e3.printStackTrace();
+					}
+				}
+			}
+
+		}
+
+	}
+}
+
+class Person implements Serializable{
+	//有参 无参构造 set get toString 四个
+		private int age;
+		public Person(int age, String name) {
+			super();
+			this.age = age;
+			this.name = name;
+		}
+		private String name;
+		public int getAge() {
+			return age;
+		}
+		public void setAge(int age) {
+			this.age = age;
+		}
+		public Person() {
+			super();
+		}
+		public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		@Override
+		public String toString() {
+			return "Person [age=" + age + ", name=" + name + "]";
+		}
+	}
+```
