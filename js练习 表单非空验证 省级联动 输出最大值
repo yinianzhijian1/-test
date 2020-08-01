@@ -1,0 +1,113 @@
+####js 用户填写非空验证
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<form action="index.html" method="get" onsubmit="return checkLogin()">
+			
+			<p>用户名<input type="text" id="tv_uname"/><span id="tv_uname_span"></span></p>
+			<p>密码<input type="password" id="tv_upsw"/><span id="tv_upsw_span"></span></p>
+			<p><input type="submit" value="提交"/></p>
+		</form>
+		<script type="text/javascript">
+			
+			function checkLogin(){
+				document.getElementById("tv_uname_span").innerHTML="";
+				document.getElementById("tv_upsw_span").innerHTML="";
+				
+				var name = document.getElementById("tv_uname").value;
+				if(name==null||name==""){
+					document.getElementById("tv_uname_span").innerHTML="用户名不能空";
+					return false;
+				}
+				var psw = document.getElementById("tv_upsw").value;
+				if(psw==null||psw==""){
+					document.getElementById("tv_upsw_span").innerHTML="密码不能空";
+					return false;
+				}
+				return true;
+			}
+		</script>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200730120435047-1360258550.png)
+
+###js 省级联动
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<select onchange="show(this.value)">
+			<!--this.value就是index，也就是当前的value-->
+			<option value="0">北京市</option>
+			<option value="1">长沙市</option>
+			<option value="2">郴州市</option>
+		</select>
+		<select id="tv_select">
+			
+		</select>
+		<script type="text/javascript">
+			
+			var num = [["一区","二区","三区"],["4区","5区","6区"],["7区","8区","9区"]];
+			var select = document.getElementById("tv_select");
+//			select等于节点
+			function show(index){
+				var citys = num[index];
+//				citys等于三个区
+				var temp = "";
+				for(var i=0;i<citys.length;i++){
+					temp+="<option>"+citys[i]+"</option>";
+//					三个区都在
+				}
+				select.innerHTML=temp;
+//				三个区赋值给节点
+			}
+		</script>
+		
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200730120414063-437727395.png)
+
+###js 输出最大值
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<form>
+			<p>数值1 <input type="text" class="s"</p>	
+			<p>数值2 <input type="text" class="s"</p>
+			<p>数值3 <input type="text" class="s"</p>
+			<p>最大值 <input type="text" id="max"</p>
+			<p><input type="button" value="计算最大值" onclick="show()"</p>	
+		</form>
+		
+		<script type="text/javascript">
+			var sum = document.getElementsByClassName("s");
+			var temp = sum[0].value;
+			function show(){
+				for(var i=0;i<sum.length;i++){
+					if(temp<sum[i].value){
+						temp=sum[i].value;
+					}
+				}
+				document.getElementById("max").value=temp;
+			}
+		</script>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200730120547267-222689282.png)
