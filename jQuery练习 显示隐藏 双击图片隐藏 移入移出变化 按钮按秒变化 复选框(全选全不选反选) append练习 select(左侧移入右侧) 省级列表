@@ -1,0 +1,357 @@
+###jQuery 显示与隐藏
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>		<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<img id="a" src="img/phone2.png"/>
+		<input type="button"  id="b" value="显示" />
+		<input type="button"  id="c" value="隐藏" />
+		<input type="button"  id="d" value="切换" />
+		
+		<script type="text/javascript">
+			$("#b").click(function(){
+				$("#a").show();
+			});
+			$("#c").click(function(){
+				$("#a").hide();
+			})
+			$("#d").click(function(){
+				$("#a").toggle();
+			})
+		</script>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200731215815773-1075724561.png)
+&nbsp;
+
+###$ 双击图片隐藏
+```html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>		<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<img id="a" src="img/phone2.png"/ style="display: none;">
+		<script type="text/javascript">
+			
+			setTimeout("show()",2000);
+			
+			function show(){
+				$("#a").get(0).style.display="block"
+			}
+			$("#a").dblclick(function(){
+				$("#a").hide();
+			})
+		</script>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200731215801634-1083887063.png)
+&nbsp;
+
+
+###移入移出变化
+```
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>		<title></title>		
+		<script src="js/jquery-1.8.3.js" type="text/javascript" ></script>
+		<style type="text/css">
+			td{
+				text-align: center;
+			}
+			.getClass1{
+			 	background-color:  blue;
+			 }
+			.getClass2{
+			 	background-color:  red;
+			 }
+		</style>
+	</head>
+	<table border="1px" cellspacing="0px" cellpadding="10px">
+			
+		<tr>
+			<td>编号</td>
+			<td>年龄</td>
+			<td>名称</td>
+		</tr>
+		<tr>
+			<td>1</td>
+			<td>12</td>
+			<td>他</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>15</td>
+			<td>她</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>15</td>
+			<td>ta</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>15</td>
+			<td>ta</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>15</td>
+			<td>ta</td>
+		</tr>
+	</table>
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			$("tr:first").css({"background-color":"orange","color":"white"});
+			$("tr:even").addClass("getClass1");
+		});
+		
+		$("tr").mouseover(function(){
+			$(this).addClass("getClass2");
+		}).mouseout(function(){
+			$(this).removeClass("getClass2");
+		})
+	</script>
+	<body>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200731215917185-832784261.png)
+&nbsp;
+
+###按钮 按秒变化
+```
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title><script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<input type="button" id="a" value="轻阅读5秒"/>
+		
+		<script type="text/javascript">
+			var timeId;
+			$(document).ready(function(){
+				$("#a").prop("disabled",true);
+				timeId = setInterval("change()",1000)
+			})
+			var count = 5
+			function change(){
+				count--;
+				if(count==0){
+//					过了五秒
+					$("#a").prop("disabled",false);
+					$("#a").val("登录");
+					clearInterval(timeId)
+//					清除调用,否则一直减到负数
+				}else{
+					$("#a").val("轻阅读"+count+"秒")
+				}
+				
+				
+			}
+		</script>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200731215959105-545238269.png)
+&nbsp;
+
+###$ 复选框 全选 全不选 反选
+```
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<input type="button"  id="a" value="全选" />
+		<input type="button"  id="b" value="全不选" />
+		<input type="button"  id="c" value="反选" />
+	<table border="1px" cellspacing="0px" cellpadding="10px">
+			
+		<tr>
+			<input type="checkbox" class="aa" value="" />
+			<td>编号</td>
+			<td>年龄</td>
+			<td>名称</td>
+		</tr>
+		<tr>
+			<input type="checkbox" class="aa" value="" />
+			<td>1</td>
+			<td>12</td>
+			<td>他</td>
+		</tr>
+		<tr>
+			<input type="checkbox" class="aa" value="" />
+			<td>2</td>
+			<td>15</td>
+			<td>她</td>
+		</tr>
+		<tr>
+			<input type="checkbox" class="aa" value="" />
+			<td>3</td>
+			<td>15</td>
+			<td>ta</td>
+		</tr>
+		<tr>
+			<input type="checkbox" class="aa" value="" />
+			<td>3</td>
+			<td>15</td>
+			<td>ta</td>
+		</tr>
+
+	</table>
+	
+	<script type="text/javascript">
+		$("#a").click(function(){
+			$(".aa").prop("checked",true);
+		});
+		$("#b").click(function(){
+			$(".aa").prop("checked",false);
+		});
+		
+		$("#c").click(function(){
+			var num = $(".aa");
+			$(num).each(function(){
+//			循环遍历
+			 var temp =	$(this).prop("checked");
+			 $(this).prop("checked",!temp);
+//			 赋值,然后取赋值的反值
+				//$(this).prop("checked",!temp)
+			})
+			
+		});
+	</script>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200731220058769-1853395186.png)
+&nbsp;
+
+### append练习
+```<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title><script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<input type="button" id="a" value="添加"/>
+		<ul id="b">
+			<li>1111</li>
+		</ul>
+		<div id="c"></div>
+		<script type="text/javascript">
+			$("#a").click(function(){
+//			$("#b").append("<li>"+"222"+"</li>") 末尾插入
+//			$("<li>"+"222"+"</li>").append("#b") b插到a的末尾
+			$("#b").after("<li>"+"222"+"</li>") /*后面插入与ul同级的li*/
+//			$("#b").before("<li>"+"222"+"</li>")
+			})
+		</script>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200731220136687-1932709417.png)
+&nbsp;
+
+###select 左侧移入 右侧
+```
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title><script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<select id="aleft" multiple>
+			<option value="1">111</option>
+			<option value="2">2222</option>
+			<option value="3">333</option>
+			<option value="4">444</option>
+		</select>
+		<input type="button" id="b" value=">" />
+		<input type="button" id="c" value=">>" />
+		<select id="dright" multiple>
+			<option value="9">999</option>
+			<option value="8">888</option>
+			<option value="7">777</option>
+			<option value="6">6666</option>
+		</select>
+		
+		<script type="text/javascript">
+			$("#b").click(function(){
+				$("#aleft option:checked").appendTo("#dright")
+			})
+			$("#c").click(function(){
+				$("#aleft option").appendTo("#dright")
+			})
+		</script>
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200731220156132-1841858391.png)
+&nbsp;
+
+###$ 省级列表
+```
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title><script src="js/jquery-1.8.3.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<select id="dright">
+		</select>
+		<select id="b">
+		</select>
+		<script type="text/javascript">
+			var sum = ["广东","上海","郴州"];
+			var citys = [[111,222,333],[444,555,666],[777,888,999]];
+			
+			$(document).ready(function(){
+			
+			$("#dright").html("<option>请选择</option>")
+			
+			$(sum).each(function(index,ele){
+				var a = "<option value='"+index+"'>"+ele+"</option>"
+				$("#dright").append(a);
+			});
+			
+			$("#dright").change(function(){
+				$("#b").html("")
+				var index = $(this).val()
+				var c = citys[index]
+				$(c).each(function(index,ele){
+					var temp ="<option value='"+index+"'>"+ele+"</option>"
+					$("#b").append(temp)
+				})
+			})
+			})
+			
+		</script>
+		
+	</body>
+</html>
+```
+![](https://img2020.cnblogs.com/blog/1952644/202007/1952644-20200731220227486-83792585.png)
+&nbsp;
